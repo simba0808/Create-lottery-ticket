@@ -1,0 +1,15 @@
+{
+    "PHP_SAPI": "apache2handler",
+    "PID": "1572",
+    "HTTP_CF_CONNECTING_IP": "",
+    "REMOTE_ADDR": "::1",
+    "REQUEST_URI": "/classes/Master.php?f=place_order",
+    "HTTP_USER_AGENT": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Mobile Safari/537.36",
+    "HTTP_REFERER": "http://localhost/campanha/aleatorio",
+    "REMOTE_PORT": "54755",
+    "REQUEST_TIME_FLOAT": "1699121441.3734",
+    "REQUEST_TIME_FLOAT_DATE": "2023-11-04 18:10:41",
+    "HTTP_CF_RAY": "",
+    "UNIQUE_ID": "",
+    "QS_ConnectionId": ""
+}

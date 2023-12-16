@@ -1,0 +1,26 @@
+<IfModule mod_rewrite.c>
+Header set Access-Control-Allow-Origin "*"
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteCond %{QUERY_STRING} ^p=pages/orders$
+RewriteRule ^$ /user/compras? [R=301,L]
+RewriteRule ^user/compras$ /?p=pages/orders [L]
+RewriteRule ^user/alterar-senha$ /?p=pages/change-password [L]
+RewriteRule ^user/atualizar-cadastro$ /?p=pages/update-registration [L]
+
+RewriteRule ^cadastrar$ /?p=pages/register [L]
+RewriteRule ^meus-numeros$ /?p=pages/my-numbers [L]
+RewriteRule ^ganhadores$ /?p=pages/winners [L]
+RewriteRule ^contato$ /?p=pages/contact [L]
+RewriteRule ^termos-de-uso$ /?p=pages/terms [L]
+RewriteRule ^campanhas$ /?p=pages/campaign [L]
+RewriteRule ^concluidas$ /?p=pages/campaign-finished [L]
+RewriteRule ^em-breve$ /?p=pages/campaign-soon [L]
+RewriteRule ^recuperar-senha$ /?p=pages/recover-password [L]
+RewriteRule ^logout$ /classes/Login.php?f=logout_customer [L]
+
+RewriteRule ^campanha/(.*)$ ?p=pages/products/view_product&id=$1
+RewriteRule ^compra/(.*)$ ?p=pages/orders/view_order&id=$1
+</IfModule>
