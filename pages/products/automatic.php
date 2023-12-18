@@ -376,21 +376,25 @@ if ($enable_cpf == 1){
          <div class="row px-2">
           <?php $count = 0; foreach($cotas_premiada as $cotas_premiadas){ ?>
             <?php
-             $find_orders_query = "SELECT * FROM order_list WHERE product_id={$id} AND order_numbers REGEXP '" . $cotas_premiadas . "'";
+             //$find_orders_query = "SELECT id FROM order_list  WHERE product_id={$id} AND order_numbers REGEXP '" . $cotas_premiadas. "'";
+             $find_orders_query = "SELECT id
+             FROM order_list USE INDEX (order_list_index)
+             WHERE product_id = {$id} AND CONCAT(',', order_numbers, ',') LIKE '%,{$cotas_premiadas},%';";
+
              $orders = $conn->query($find_orders_query)->num_rows;
-             if ($orders > 0){
+             if ($orders == 1){
                ?>
                   <div class="col-auto px-1 mb-2 text-center">
                      <button title="Indisponível" class="btn btn-danger w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
                         <?php 
-                        echo ($cotas_premiadas); 
+                        echo ($cotas_premiadas);
                      ?></span></span></button>
                   </div>
                <?php
              } else {
                ?>
                   <div class="col-auto px-1 mb-2 text-center">
-                     <button title="Disponível" class="btn btn-success w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                     <button title="Disponív- XZpel" class="btn btn-success w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
                         <?php 
                         echo ($cotas_premiadas);
                      ?></span></span></button>

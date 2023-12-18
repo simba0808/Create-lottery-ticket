@@ -34,9 +34,11 @@ Class Master extends DBConnection {
 	}
 
 	function add_to_card() {
+		//echo '<script>console.log("Welcome to GeeksforGeeks!"); </script>'; 
 		extract($_POST);
 		$customer_id = $this->settings->userdata('id');
-
+		$current = time();
+		$resp['current'] = $current;
     // Limpar tabela cart_list para o cliente atual
 		$delete = $this->conn->query("DELETE FROM `cart_list` WHERE customer_id = '{$customer_id}'");
 
@@ -75,6 +77,7 @@ Class Master extends DBConnection {
 	}
 
 	function place_order(){
+		//echo "<script>alert('HererJKJ');</script>";
 		$customer_id = $this->settings->userdata('id');
 		$customer_fname = $this->settings->userdata('firstname');
 		$customer_lname = $this->settings->userdata('lastname');
@@ -161,7 +164,7 @@ Class Master extends DBConnection {
 			$date_of_draw = $row['date_of_draw'];
 		}
 
-        $totalSales = $paid_n + $pending_n;
+    $totalSales = $paid_n + $pending_n;
 
 		if($status > 1){
 			$resp['status'] = 'failed';
@@ -178,7 +181,7 @@ Class Master extends DBConnection {
 			exit;
 		}
         
-        if($date_of_draw){
+  	if($date_of_draw){
 			$expirationTime = date('Y-m-d H:i:s', strtotime($date_of_draw));
 
 			$currentDateTime = date('Y-m-d H:i:s');
@@ -189,14 +192,14 @@ Class Master extends DBConnection {
 				return json_encode($resp);
 				exit; 
 			}
-        }
+    }
         
 		$total_pending_numbers = ($pending_n + $quantity);
 		$total_paid_numbers = ($paid_n + $quantity);
 
 		$total_amount = $cart_total > 0 ? $cart_total : 0;
         
-        $pay_status = 1;
+    $pay_status = 1;
 
 		if($total_amount == 0){
 			$pay_status = 2;
@@ -205,7 +208,7 @@ Class Master extends DBConnection {
 			$this->conn->query("UPDATE product_list SET pending_numbers = '{$total_pending_numbers}' WHERE id = '{$product_id}'");
 		}
 		
-        #FIM OBTEM A QUANTIDADE DE NÚMEROS PENDENTES DO SORTEIO E ATUALIZA A QUANTIDADE DE VENDAS PENDENTES: pending_numbers	
+    #FIM OBTEM A QUANTIDADE DE NÚMEROS PENDENTES DO SORTEIO E ATUALIZA A QUANTIDADE DE VENDAS PENDENTES: pending_numbers	
 
 		$order_discount_amount = '';
 		if ($enable_discount && $discount_amount) {
@@ -274,7 +277,7 @@ Class Master extends DBConnection {
 		$order_numbers = '';
 
 		$insert = $this->conn->query("INSERT INTO `order_list` (`code`, `customer_id`, `product_name`, `quantity`, `status`, `total_amount`, `order_token`, `order_numbers`, `product_id`, `order_expiration`, `discount_amount`, `date_created`) VALUES ('{$code}', '{$customer_id}', '{$product_name}', '{$quantity}', '{$pay_status}', '{$total_amount}', '{$order_token}', '{$order_numbers}', '{$product_id}', '{$order_expiration}', '{$order_discount_amount}', '{$dateCreated}') ");
-
+		
 		if($insert){
 			$oid = $this->conn->insert_id;
 
@@ -292,28 +295,28 @@ Class Master extends DBConnection {
 
 			$total_numbers_generated = $quantity;
 			$use_manual_numbers = false; 
-            if($type_of_draw > 1){
-            	$use_manual_numbers = true; 
-            }
+      if($type_of_draw > 1){
+        $use_manual_numbers = true; 
+      }
 
-            $orders = $this->conn->query("SELECT order_numbers FROM order_list WHERE product_id = '{$product_id}'");
+      $orders = $this->conn->query("SELECT order_numbers FROM order_list WHERE product_id = '{$product_id}'");
 			$cotas_vendidas = array();
 			$all_lucky_numbers = [];
 			while ($row = $orders->fetch_assoc()) {
-	        	$cotas_vendidas[] = $row['order_numbers'];
-            }
+	      $cotas_vendidas[] = $row['order_numbers'];
+      }
 
 			$all_lucky_numbers = implode(',', $cotas_vendidas);
-            $all_lucky_numbers = explode(',', $all_lucky_numbers);
+      $all_lucky_numbers = explode(',', $all_lucky_numbers);
 
-			$cotas_vendidas = array_filter($cotas_vendidas);
+		 	$cotas_vendidas = array_filter($cotas_vendidas);
 
-            if ($use_manual_numbers) {
+      if ($use_manual_numbers) {
 
 				##
 
 			} else {
-				echo "<script>alert('BBB');</script>";
+
 				#Utilizar geração aleatória de números
 				self::set_quotes($cotas_vendidas);
 
@@ -327,6 +330,7 @@ Class Master extends DBConnection {
 				$order_numbers = array_map(function ($item) use ($qty_numbers, $globos) {
 									return str_pad($item, max((int)$globos, strlen($qty_numbers)), "0", STR_PAD_LEFT);
 								}, $free_numbers);
+				
 
 				$qtd2 = count(self::$cotas); //quantidade de cotas já geradas
 
@@ -340,53 +344,51 @@ Class Master extends DBConnection {
 
 				$order_numbers = implode(",", $order_numbers) . ',';
 
-				$update = $this->conn->query("UPDATE `order_list` SET `order_numbers` = '{$order_numbers}' WHERE `code` = '{$code}'");
+				$update = $this->conn->query("UPDATE `order_list` USE INDEX (order_list_index) SET `order_numbers` = '{$order_numbers}' WHERE `code` = '{$code}'");
 			}
 
 			#FIM GERAR NÚMEROS ALEATÓRIOS
 
 
-			while($row = $cart->fetch_assoc()):
-				if(!empty($data)) $data .= ", ";
+			while ($row = $cart->fetch_assoc()) {
+				$data .= (!empty($data)) ? ", " : '';
 				$data .= "('{$oid}', '{$row['product_id']}', '{$row['quantity']}', '{$row['price']}')";
-			endwhile;
-
-			if(!empty($data)){
-				$sql = "INSERT INTO order_items (`order_id`, `product_id`, `quantity`, `price`) VALUES {$data}";
+			}
+				
+			if (!empty($data)) {
+				$sql = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES {$data}";
 				$save = $this->conn->query($sql);
-				if($save){
-								#$resp['redirect'] = '/compra/'.$order_token.'';
+				if ($save) {
+					#$resp['redirect'] = '/compra/'.$order_token.'';
 					$resp['status'] = 'success';
-					$this->conn->query("DELETE FROM `cart_list` where customer_id = '{$customer_id}'");
-				}else{
+					$this->conn->query("DELETE FROM cart_list WHERE customer_id = '{$customer_id}'");
+				} else {
 					$resp['status'] = 'failed';
 					$resp['error'] = $this->conn->error;
-					$this->conn->query("DELETE FROM `order_list` where id = '{$oid}'");
+					$this->conn->query("DELETE FROM order_list WHERE id = '{$oid}'");
 				}
-			} else{
+			} else {
 				$resp['status'] = 'success';
 			}
-
-			} else {
-				$resp['status'] = 'failed';
-				$resp['error'] = $this->conn->error;
-			}
-
-			if($resp['status'] == 'success'){
-				$resp['redirect'] = '/compra/'.$order_token.'';
-						//#$this->settings->set_flashdata('success', 'Order has been placed successfully.');
-			}
-
-			if ($status == 1){
-				$query = $this->conn->query("SELECT SUM(quantity) as quantity FROM order_list WHERE product_id = '{$product_id}'");
-				if ($query && $query->num_rows > 0) {
-					$row = $query->fetch_assoc();
-					$quantidade = $row['quantity'];
-					if ($quantidade >= ($qty_numbers + 1)){
-						$this->conn->query("UPDATE product_list SET status = '3', status_display = '6' WHERE id = '{$product_id}'");
-					}
+		} else {
+			$resp['status'] = 'failed';
+			$resp['error'] = $this->conn->error;
+		}
+		if ($resp['status'] == 'success') {
+			$resp['redirect'] = '/compra/'.$order_token.'';
+			//#$this->settings->set_flashdata('success', 'Order has been placed successfully.');
+		}
+				
+		if ($status == 1) {
+			$query = $this->conn->query("SELECT SUM(quantity) as quantity FROM order_list WHERE product_id = '{$product_id}'");
+			if ($query && $query->num_rows > 0) {
+				$row = $query->fetch_assoc();
+				$quantidade = $row['quantity'];
+				if ($quantidade >= ($qty_numbers + 1)) {
+					$this->conn->query("UPDATE product_list SET status = '3', status_display = '6' WHERE id = '{$product_id}'");
 				}
 			}
+		}
 				
 		return json_encode($resp);
 		//$main_lock_released = gaia_release_lock($main_lock_data);
@@ -395,16 +397,23 @@ Class Master extends DBConnection {
 
 	protected static function set_quotes($items = []){
 		if ($items) {
-            foreach ($items as $item) {
-                $cota_formatada = explode(',', preg_replace('/\s+/', '', $item));
-                $cota_formatada = array_map(function ($cota) {
-                    return ltrim($cota, '0');
-                }, $cota_formatada);
+            // foreach ($items as $item) {
+            //     $cota_formatada = explode(','	, preg_replace('/\s+/', '', $item));
+            //     $cota_formatada = array_map(function ($cota) {
+            //         return ltrim($cota, '0');
+            //     }, $cota_formatada);
 
-                self::$cotas = array_merge(self::$cotas, $cota_formatada);
-            }
+            //     self::$cotas = array_merge(self::$cotas, $cota_formatada);
+            // }
             
-            self::$cotas = array_filter(self::$cotas);
+            // self::$cotas = array_filter(self::$cotas);
+						$cota_formatada = 
+							array_map(
+								function ($item) {
+									return array_map(function ($cota) { return ltrim($cota, '0'); }, explode(',', preg_replace('/\s+/', '', $item)));
+								}, $items
+							);
+						self::$cotas = array_merge(self::$cotas, ...$cota_formatada);
         }
 	}
 
