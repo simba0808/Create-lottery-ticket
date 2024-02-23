@@ -89,7 +89,15 @@ $facebook_pixel_id = $_settings->info('facebook_pixel_id');
                               <img src="<?php echo BASE_URL ?>assets/img/logo.png" class="app-brand img-fluid">
                            </a>
                         <?php } ?>
-
+                        <?php if($logo){ ?>
+                           <a href="/">
+                              <img src="<?= $logo; ?>" class="app-brand img-fluid">
+                           </a>
+                        <?php }else{ ?>
+                           <a href="/">
+                              <img src="<?php echo BASE_URL ?>assets/img/logo.png" class="app-brand img-fluid">
+                           </a>
+                        <?php } ?>
                         <div class="app-header-mobile"><button type="button" class="btn btn-link text-white menu-mobile--button pe-0 font-lgg" data-bs-dismiss="modal" aria-label="Fechar"><i class="bi bi-x-circle"></i></button></div>
                      </div>
                   </header>
@@ -98,12 +106,13 @@ $facebook_pixel_id = $_settings->info('facebook_pixel_id');
                         <?php if($user_id){ ?>
                            <div class="card-usuario mb-2">
                               <div class="card-usuario--informacoes">
-                               <h3>Olá, <?php 
-                               $firstname = ucwords($_settings->userdata('firstname')); 
-                               $lastname = ucwords($_settings->userdata('lastname')); 
-                               echo $firstname.' '.$lastname.'';
-                               ?>
-                            </h3>
+                                 <h3>Olá, <?php 
+                                    $firstname = ucwords($_settings->userdata('firstname')); 
+                                    $lastname = ucwords($_settings->userdata('lastname')); 
+                                    echo $firstname.' '.$lastname.'';
+                                    ?>
+                                 </h3>
+                            <div class="email font-xss saldo-value"></div>
                             <div class="email font-xss saldo-value"></div>
                          </div>
                          <div class="card-usuario--sair">
