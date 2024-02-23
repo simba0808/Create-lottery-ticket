@@ -13,16 +13,8 @@
                   <div class="col-12 mb-2">
                      <div class="SorteioTpl_sorteioTpl__2s2Wu SorteioTpl_destaque__3vnWR  pointer">
                         <a href="/campanha/<?= $row['slug'] ?>"><div class="SorteioTpl_imagemContainer__2-pl4 col-auto ">
-                           <div id="carouselSorteio640d0a84b1fef407920230311" class="carousel slide carousel-dark carousel-fade" data-bs-ride="carousel">
-                              <div class="carousel-inner">
-                                 <div class="carousel-item active" style="width:100%;height:290px">
-                                    <div style="display:block;overflow:hidden;position:absolute;top:0;left:0;bottom:0;right:0;box-sizing:border-box;margin:0">
-                                       <img alt="<?= $row['name'] ?>" src="<?= validate_image($row['image_path']) ?>" decoding="async" data-nimg="fill" class="SorteioTpl_imagem__2GXxI" style="position:absolute;top:0;left:0;bottom:0;right:0;box-sizing:border-box;padding:0;border:none;margin:auto;display:block;width:0;height:0;min-width:100%;max-width:100%;min-height:100%;max-height:100%">
-                                       <noscript><img alt="<?= $row['name'] ?>" src="<?= validate_image($row['image_path']) ?>" decoding="async" data-nimg="fill" style="position:absolute;top:0;left:0;bottom:0;right:0;box-sizing:border-box;padding:0;border:none;margin:auto;display:block;width:0;height:0;min-width:100%;max-width:100%;min-height:100%;max-height:100%" class="SorteioTpl_imagem__2GXxI" loading="lazy"/></noscript>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div></a>
+                           <h2>Home</h2>
+                        </a>
                         </div>
                         <div class="SorteioTpl_info__t1BZr">
                            <h1 class="SorteioTpl_title__3RLtu"><a href="/campanha/<?= $row['slug'] ?>"><?= $row['name'] ?></a></h1>
