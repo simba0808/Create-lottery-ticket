@@ -7,47 +7,6 @@
                   </div>
                </div>
                <?php 
-               $qry = $conn->query("SELECT * FROM `product_list` WHERE status_display <> '4' AND featured_draw = '1' ORDER BY RAND() LIMIT 1");
-               while($row = $qry->fetch_assoc()):
-               ?>
-                  <div class="col-12 mb-2">
-                     <div class="SorteioTpl_sorteioTpl__2s2Wu SorteioTpl_destaque__3vnWR  pointer">
-                        <a href="/campanha/<?= $row['slug'] ?>"><div class="SorteioTpl_imagemContainer__2-pl4 col-auto ">
-                           <h2>Home</h2>
-                        </a>
-                        </div>
-                        <div class="SorteioTpl_info__t1BZr">
-                           <h1 class="SorteioTpl_title__3RLtu"><a href="/campanha/<?= $row['slug'] ?>"><?= $row['name'] ?></a></h1>
-                           <p class="SorteioTpl_descricao__1b7iL" style="margin-bottom:1px"><?php echo isset($row['subtitle']) ? $row['subtitle'] : ''; ?></p>
-                           <?php if($row['status_display'] == 1){ ?>
-                              <span class="badge bg-success blink bg-opacity-75 font-xsss">Adquira já!</span>
-                           <?php } ?>
-                           <?php if($row['status_display'] == 2){ ?>
-                              <span class="badge bg-dark blink font-xsss mobile badge-status-1">Corre que está acabando!</span>
-                           <?php } ?>
-                           <?php if($row['status_display'] == 3){ ?>
-                              <span class="badge bg-dark font-xsss mobile badge-status-3">Aguarde a campanha!</span>
-                           <?php } ?>
-                           <?php if($row['status_display'] == 4){ ?>
-                              <span class="badge bg-dark font-xsss">Concluído</span>
-                              <?php
-                              $date_of_draw = strtotime($row['date_of_draw']);
-                              $date_of_draw = date('d/m', $date_of_draw);
-                              ?>
-                              <div class="SorteioTpl_dtSorteio__2mfSc"><i class="bi bi-calendar2-check"></i> <?= $date_of_draw; ?></div>
-                           <?php } ?>
-                           <?php if($row['status_display'] == 5){ ?>
-                              <span class="badge bg-dark font-xsss">Em breve!</span>
-                           <?php } ?>
-                           <?php if($row['status_display'] == 6){ ?>
-                              <span class="badge bg-dark font-xsss">Aguarde o sorteio!</span>
-                           <?php } ?>
-                        </div>
-                     </div>
-                  </div>
-               <?php endwhile; ?>
-
-               <?php 
                $qry = $conn->query("SELECT * FROM `product_list` WHERE featured_draw = '0' AND private_draw = '0' ORDER BY id DESC LIMIT 10");
                if($qry->num_rows > 0){
                   while($row = $qry->fetch_assoc()):
@@ -93,6 +52,48 @@
                   </div>
                <?php endwhile; ?>
             <?php } ?>
+               <?php 
+               $qry = $conn->query("SELECT * FROM `product_list` WHERE status_display <> '4' AND featured_draw = '1' ORDER BY RAND() LIMIT 1");
+               while($row = $qry->fetch_assoc()):
+               ?>
+                  <div class="col-12 mb-2">
+                     <div class="SorteioTpl_sorteioTpl__2s2Wu SorteioTpl_destaque__3vnWR  pointer">
+                        <a href="/campanha/<?= $row['slug'] ?>"><div class="SorteioTpl_imagemContainer__2-pl4 col-auto ">
+                           <h2>Home</h2>
+                        </a>
+                        </div>
+                     </div>
+                  </div>
+               <?php endwhile; ?>
+
+               
+            <div class="SorteioTpl_info__t1BZr">
+                           <h1 class="SorteioTpl_title__3RLtu"><a href="/campanha/<?= $row['slug'] ?>"><?= $row['name'] ?></a></h1>
+                           <p class="SorteioTpl_descricao__1b7iL" style="margin-bottom:1px"><?php echo isset($row['subtitle']) ? $row['subtitle'] : ''; ?></p>
+                           <?php if($row['status_display'] == 1){ ?>
+                              <span class="badge bg-success blink bg-opacity-75 font-xsss">Adquira já!</span>
+                           <?php } ?>
+                           <?php if($row['status_display'] == 2){ ?>
+                              <span class="badge bg-dark blink font-xsss mobile badge-status-1">Corre que está acabando!</span>
+                           <?php } ?>
+                           <?php if($row['status_display'] == 3){ ?>
+                              <span class="badge bg-dark font-xsss mobile badge-status-3">Aguarde a campanha!</span>
+                           <?php } ?>
+                           <?php if($row['status_display'] == 4){ ?>
+                              <span class="badge bg-dark font-xsss">Concluído</span>
+                              <?php
+                              $date_of_draw = strtotime($row['date_of_draw']);
+                              $date_of_draw = date('d/m', $date_of_draw);
+                              ?>
+                              <div class="SorteioTpl_dtSorteio__2mfSc"><i class="bi bi-calendar2-check"></i> <?= $date_of_draw; ?></div>
+                           <?php } ?>
+                           <?php if($row['status_display'] == 5){ ?>
+                              <span class="badge bg-dark font-xsss">Em breve!</span>
+                           <?php } ?>
+                           <?php if($row['status_display'] == 6){ ?>
+                              <span class="badge bg-dark font-xsss">Aguarde o sorteio!</span>
+                           <?php } ?>
+                        </div>
       </div>
    </div>
 </div>
