@@ -12,7 +12,7 @@ $db = new DBConnection;
 $conn = $db->conn;
 
 if(!defined('APP_NAME')) define('APP_NAME', 'DROPE');
-if(!defined('APP_VERSION')) define('APP_VERSION', '1.3.1');
+if(!defined('APP_VERSION')) define('APP_VERSION', '1.5.1');
 if(!defined('DEV_NAME')) define('DEV_NAME', 'Drope');
 if(!defined('DEV_URL')) define('DEV_URL', 'https://dropestore.com');
 if(!defined('SUPPORT_URL')) define('SUPPORT_URL', 'https://dropestore.com/suporte');
@@ -26,7 +26,7 @@ function exibir_cabecalho($conn) {
     if (isset($_GET['id'])) {
         $id_produto = $_GET['id'];               
         // Obtenha os dados do produto com base no ID
-        $qry = $conn->query("SELECT * from `product_list` where slug = '$id_produto'");
+        $qry = $conn->query("SELECT * from `product_order` where slug = '$id_produto'");
 
         // Verifique se a consulta retornou resultados
         if ($qry && $qry->num_rows > 0) {
@@ -44,7 +44,21 @@ function exibir_cabecalho($conn) {
                $titulo_pagina = $titulo_site;
 
            } 
-       }
+       } else if ($qry && $qry->num_rows > 0) {
+        $row = $qry->fetch_assoc();
+        $nome_produto = $row['age'];
+        $image_path = validate_image($row['image_path']);
+        $description = $row['description'];
+        $titulo_pagina = "$nome_produto - $titulo_site";
+    } else {
+        $url = $_SERVER['REQUEST_URI'];
+        if (strpos($url, '/simba/') !== false) {
+            $titulo_pagina = "Checkout - $titulo_site";
+        }else{
+           $titulo_pagina = $titulo_site;
+       } 
+   }
+       
    } else {
         // Obtenha o caminho da URL
     $url = $_SERVER['REQUEST_URI'];
@@ -94,6 +108,14 @@ function exibir_cabecalho($conn) {
     } 
 
     if (strpos($url, '/recuperar-senha') !== false) {
+        $titulo_pagina = "Recuperação de senha - $titulo_site";
+    } 
+
+    if (strpos($url, '/recuperar-hah') !== false) {
+        $titulo_pagina = "Recuperação de senha - $titulo_site";
+    } 
+
+    if (strpos($url, '/recuperar-situation') !== false) {
         $titulo_pagina = "Recuperação de senha - $titulo_site";
     } 
 
