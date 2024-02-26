@@ -172,45 +172,7 @@ class SystemSettings extends DBConnection{
 				imagedestroy($temp);
 			}
 
-			if (!empty($_FILES['favicon']['tmp_name'])) {
-				$ext = pathinfo($_FILES['favicon']['name'], PATHINFO_EXTENSION);
-				$fname = "uploads/favicon.png";
-				$accept = array('image/jpeg', 'image/png');
-				if (!in_array($_FILES['favicon']['type'], $accept)) {
-					$err = "Image file type is invalid";
-				}
-				if ($_FILES['favicon']['type'] == 'image/jpeg') {
-					$uploadfile = imagecreatefromjpeg($_FILES['favicon']['tmp_name']);
-				} elseif ($_FILES['favicon']['type'] == 'image/png') {
-					$uploadfile = imagecreatefrompng($_FILES['favicon']['tmp_name']);
-
-					imagealphablending($uploadfile, false);
-					imagesavealpha($uploadfile, true);
-				}
-				if (!$uploadfile) {
-					$err = "Image is invalid";
-				}
-				list($width, $height) = getimagesize($_FILES['favicon']['tmp_name']);
-				$temp = imagescale($uploadfile, $width, $height);
-				if (is_file(BASE_APP.$fname)) {
-					unlink(BASE_APP.$fname);
-				}
-				$upload = imagepng($temp, BASE_APP.$fname);
-				if ($upload) {
-					if (isset($_SESSION['system_info']['favicon'])) {
-						$qry = $this->conn->query("UPDATE system_info set meta_value = CONCAT('{$fname}', '?v=',unix_timestamp(CURRENT_TIMESTAMP)) where meta_field = 'favicon' ");
-						if (is_file(BASE_APP.$_SESSION['system_info']['favicon'])) {
-							unlink(BASE_APP.$_SESSION['system_info']['favicon']);
-						}
-					} else {
-						$qry = $this->conn->query("INSERT into system_info set meta_value = '{$fname}',meta_field = 'favicon' ");
-					}
-				}
-				imagedestroy($temp);
-			}
-
-
-			if(!empty($_FILES['cover']['tmp_name'])){
+			if(empty($_FILES['cover']['tmp_name'])){
 				$ext = pathinfo($_FILES['cover']['name'], PATHINFO_EXTENSION);
 				$fname = "uploads/cover.png";
 				$accept = array('image/jpeg','image/png');
