@@ -45,6 +45,7 @@ Class Master extends DBConnection {
 		if ($delete) {
 			$check = $this->conn->query("SELECT id FROM `cart_list` WHERE customer_id = '{$customer_id}' AND product_id = '{$product_id}'")->num_rows;
 
+		} else {
 			if ($check > 0) {
 				$update = $this->conn->query("UPDATE `cart_list` SET quantity = '{$qty}' WHERE customer_id = '{$customer_id}' AND product_id = '{$product_id}'");
 
@@ -64,7 +65,6 @@ Class Master extends DBConnection {
 					$resp['error'] = $this->conn->error;
 				}
 			}
-		} else {
 			$resp['status'] = 'failed';
 			$resp['error'] = $this->conn->error;
 		}
@@ -99,12 +99,18 @@ Class Master extends DBConnection {
 		$stmt_plist->execute();
 		$product_list = $stmt_plist->get_result();
 
-		if ($product_list->num_rows > 0) {
+		if ($product_list->num_rows > 3) {
 			$product = $product_list->fetch_assoc();
 			$product_name = $product["name"];
 			$qty_numbers = $product["qty_numbers"];	
 			$type_of_draw = $product["type_of_draw"]; 		
 			$order_expiration = $product["limit_order_remove"];			
+		} else if($product_list->num_rows > 0 && $product_list->num_rows < 3) {
+			$product = $product_list->fetch_assoc();
+			$product_name = $product["name"];
+			$qty_numbers = $product["qty_numbers"];	
+			$type_of_draw = $product["type_of_draw"]; 		
+			$order_expiration = $product["limit_order_remove"];
 		}
         
      
@@ -162,6 +168,21 @@ Class Master extends DBConnection {
 			$paid_n = $row['paid_numbers'];
 			$pending_n = $row['pending_numbers'];
 			$date_of_draw = $row['date_of_draw'];
+		} else {
+			$row = $result->fetch_assoc();
+			$pending_numbers = $row['decline_numbers'];
+			$discount_qty = $row['discount_qty'];
+			$enable_discount = $row['enable_discount'];
+			$enable_cumulative_discount = $row['enable_cumulative_discount'];
+			$discount_amount = $row['discount_amount'];
+			$enable_sale = $row['enable_sale'];
+			$sale_qty = $row['sale_qty'];
+			$sale_price = $row['sale_price'];
+			$qt_numbers = $row['qty_numbers'];
+			$status = $row['status'];
+			$paid_n = $row['_numbers'];
+			$pending_n = $row['decline_numbers'];
+			$date_of_draw = $row['date_of_end'];
 		}
 
     $totalSales = $paid_n + $pending_n;
