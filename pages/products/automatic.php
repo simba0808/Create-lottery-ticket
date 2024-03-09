@@ -330,28 +330,66 @@ if ($enable_cpf == 1){
       }
      }
       ?>
-      <?php $count = 0; foreach($winners as $winner){ $count++; ?>
-
-         <div class="app-card card bg-success text-white mb-2">
-            <div class="card-body">
-               <div class="row align-items-center">
-                  <div class="col-auto">
-                     <div class="rounded-pill" style="width: 56px; height: 56px; position: relative; overflow: hidden;">
-                        <div style="display: block; overflow: hidden; position: absolute; inset: 0px; box-sizing: border-box; margin: 0px;">
-                           <img alt="<?= $winner['name']; ?>" src="<?php echo BASE_URL ?>assets/img/avatar.png" decoding="async" data-nimg="fill" style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;">
-                           <noscript></noscript>
-                        </div>
-                     </div>
+     $orders = $conn->query($find_orders_query)->num_rows;
+             if ($orders == 1){
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Indisponível" class="btn btn-danger w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
                   </div>
-                  <div class="col">
-                     <h5 class="mb-0"><?= $count; ?>º - <?= $winner['name']; ?>&nbsp;<i class="bi bi-check-circle text-white-50"></i></h5>
-                     <div class="text-white-50"><small>Ganhador(a) com a cota <?= $winner['number']; ?></small></div>
+               <?php
+             } else {
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Disponív- XZpel" class="btn btn-success w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
                   </div>
-               </div>
-            </div>
-         </div>
-      <?php } ?>
-
+               <?php
+             }
+             $orders = $conn->query($find_orders_query)->num_rows;
+             if ($orders == 1){
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Indisponível" class="btn btn-danger w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
+                  </div>
+               <?php
+             } else {
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Disponív- XZpel" class="btn btn-success w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
+                  </div>
+               <?php
+             }
+             $orders = $conn->query($find_orders_query)->num_rows;
+             if ($orders == 1){
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Indisponível" class="btn btn-danger w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
+                  </div>
+               <?php
+             } else {
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Disponív- XZpel" class="btn btn-success w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
+                  </div>
+               <?php
+             }
 <?php } ?>
 
 <div class="app-card card font-xs mb-2 sorteio_sorteioDesc__TBYaL">
