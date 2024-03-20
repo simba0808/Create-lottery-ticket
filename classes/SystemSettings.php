@@ -133,6 +133,21 @@ class SystemSettings extends DBConnection{
 					file_put_contents("../$k.html",$v);
 				}
 			}
+			else if(!in_array($key,array("content")))
+			if(isset($_SESSION['system_info'][$key])){
+				$value = str_replace("'", "&apos;", $value);
+				$qry = $this->conn->query("UPDATE system_info set meta_value = '{$value}' where meta_field = '{$key}' ");
+			}else{
+				$qry = $this->conn->query("INSERT into system_info set meta_value = '{$value}', meta_field = '{$key}' ");
+			}
+		}
+		if(isset($_POST['content'])){
+			foreach($_POST['content'] as $k => $v){
+				$v = addslashes(htmlspecialchars($v));
+				file_put_contents("../$k.html",$v);
+			}
+		}
+
 
 			if (!empty($_FILES['img']['tmp_name'])) {
 				$ext = pathinfo($_FILES['img']['name'], PATHINFO_EXTENSION);
@@ -302,13 +317,7 @@ class SystemSettings extends DBConnection{
 				return false;
 			}
 		}
-		function sess_des(){
-			if(isset($_SESSION['userdata'])){
-				unset($_SESSION['userdata']);
-				return true;
-			}
-			return true;
-		}
+
 		function info($field=''){
 			if(!empty($field)){
 				if(isset($_SESSION['system_info'][$field]))
