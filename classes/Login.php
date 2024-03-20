@@ -43,10 +43,145 @@ class Login extends DBConnection {
 			redirect('admin/login.php');
 		}
 	}
+   
+    if ($this->conn->error) {
+        $resp['status'] = 'failed';
+        $resp['_error'] = $this->conn->error;
+    }
+    
+    return json_encode($resp);
+}
 
-	function login_customer(){
-	global $_settings;
+public function logout_customer(){
+	if($this->settings->sess_des()){
+					$currentPath = $_SERVER['REQUEST_URI'];
+					$redirect_url = preg_replace("/.*\?\/([^\/]+)/", "$1", $currentPath);            
+					if($currentPath == '/logout?/'){
+					header('Location: /');
+					exit;
+					}else{
+					redirect($redirect_url);
+					exit;	
+					}
+		
+	}
 	$enable_password = $_settings->info('enable_password');	
+	$_POST['phone'] = preg_replace("/[^0-9]/", "", $_POST['phone']);
+	extract($_POST);
+	$phone = preg_replace("/[^0-9]/", "", $phone);
+	$stmt = $this->conn->prepare("SELECT * from customer_list where phone = ?");
+
+	$stmt->bind_param('s', $phone);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	
+	if ($result->num_rows > 0) {
+			$res = $result->fetch_array();
+			
+			if ($enable_password == 1) {
+					if ($res['password'] !== md5($password)) {
+							$resp['status'] = 'failed';
+							$resp['msg'] = 'Incorrect Password';
+					} else {
+							foreach ($res as $k => $v) {
+									$this->settings->set_userdata($k, $v);
+							}
+							$this->settings->set_userdata('login_type', 2);
+							$resp['status'] = 'success';
+					}
+			} elseif ($enable_password == 2) {
+					foreach ($res as $k => $v) {
+							$this->settings->set_userdata($k, $v);
+					}
+					$this->settings->set_userdata('login_type', 2);
+					$resp['status'] = 'success';
+			} else {
+					$resp['status'] = 'failed';
+					$resp['msg'] = 'Invalid Login Configuration';
+			}
+	} else {
+			$resp['status'] = 'failed';
+			$resp['msg'] = 'Incorrect Phone Number';
+	}
+	
+	if ($this->conn->error) {
+			$resp['status'] = 'failed';
+			$resp['_error'] = $this->conn->error;
+	}
+}
+
+public function logout_customer(){
+	if($this->settings->sess_des()){
+					$currentPath = $_SERVER['REQUEST_URI'];
+					$redirect_url = preg_replace("/.*\?\/([^\/]+)/", "$1", $currentPath);            
+					if($currentPath == '/logout?/'){
+					header('Location: /');
+					exit;
+					}else{
+					redirect($redirect_url);
+					exit;	
+					}
+		
+	}
+	$enable_password = $_settings->info('enable_password');	
+	$_POST['phone'] = preg_replace("/[^0-9]/", "", $_POST['phone']);
+	extract($_POST);
+	$phone = preg_replace("/[^0-9]/", "", $phone);
+	$stmt = $this->conn->prepare("SELECT * from customer_list where phone = ?");
+
+	$stmt->bind_param('s', $phone);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	
+	if ($result->num_rows > 0) {
+			$res = $result->fetch_array();
+			
+			if ($enable_password == 1) {
+					if ($res['password'] !== md5($password)) {
+							$resp['status'] = 'failed';
+							$resp['msg'] = 'Incorrect Password';
+					} else {
+							foreach ($res as $k => $v) {
+									$this->settings->set_userdata($k, $v);
+							}
+							$this->settings->set_userdata('login_type', 2);
+							$resp['status'] = 'success';
+					}
+			} elseif ($enable_password == 2) {
+					foreach ($res as $k => $v) {
+							$this->settings->set_userdata($k, $v);
+					}
+					$this->settings->set_userdata('login_type', 2);
+					$resp['status'] = 'success';
+			} else {
+					$resp['status'] = 'failed';
+					$resp['msg'] = 'Invalid Login Configuration';
+			}
+	} else {
+			$resp['status'] = 'failed';
+			$resp['msg'] = 'Incorrect Phone Number';
+	}
+	
+	if ($this->conn->error) {
+			$resp['status'] = 'failed';
+			$resp['_error'] = $this->conn->error;
+	}
+}
+
+	public function logout_customer(){
+		if($this->settings->sess_des()){
+            $currentPath = $_SERVER['REQUEST_URI'];
+            $redirect_url = preg_replace("/.*\?\/([^\/]+)/", "$1", $currentPath);            
+            if($currentPath == '/logout?/'){
+            header('Location: /');
+            exit;
+            }else{
+            redirect($redirect_url);
+            exit;	
+            }
+			
+		}
+		$enable_password = $_settings->info('enable_password');	
     $_POST['phone'] = preg_replace("/[^0-9]/", "", $_POST['phone']);
     extract($_POST);
     $phone = preg_replace("/[^0-9]/", "", $phone);
@@ -89,24 +224,6 @@ class Login extends DBConnection {
         $resp['status'] = 'failed';
         $resp['_error'] = $this->conn->error;
     }
-    
-    return json_encode($resp);
-}
-
-
-	public function logout_customer(){
-		if($this->settings->sess_des()){
-            $currentPath = $_SERVER['REQUEST_URI'];
-            $redirect_url = preg_replace("/.*\?\/([^\/]+)/", "$1", $currentPath);            
-            if($currentPath == '/logout?/'){
-            header('Location: /');
-            exit;
-            }else{
-            redirect($redirect_url);
-            exit;	
-            }
-			
-		}
 	}
 }
 $action = !isset($_GET['f']) ? 'none' : strtolower($_GET['f']);
@@ -124,6 +241,18 @@ switch ($action) {
 	case 'logout_customer':
 		echo $auth->logout_customer();
 		break;
+		case 'login':
+			echo $auth->login();
+			break;
+		case 'logout':
+			echo $auth->logout();
+			break;
+		case 'login_customer':
+			echo $auth->login_customer();
+			break;
+		case 'logout_customer':
+			echo $auth->logout_customer();
+			break;
 	default:
 		echo $auth->index();
 		break;
