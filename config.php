@@ -160,6 +160,21 @@ function redirect($url=''){
      echo '<script>location.href="'.BASE_URL .$url.'"</script>';
 }
 
+function format_num($number = '', $decimal = '', $decimalSeparator = ',', $thousandsSeparator = '.'){
+    if(is_numeric($number)){
+        $ex = explode(".", $number);
+        $decLen = isset($ex[1]) ? strlen($ex[1]) : 0;
+        
+        if(is_numeric($decimal)){
+            return number_format($number, $decimal, $decimalSeparator, $thousandsSeparator);
+        } else {
+            return number_format($number, $decLen, $decimalSeparator, $thousandsSeparator);
+        }
+    } else {
+        return "Invalid Input";
+    }
+}
+
 function drope_format_luck_numbers_dashboard($client_lucky_numbers, $raffle_total_numbers, $class, $opt, $type_of_draw) {
     $bichos = array();
     if($type_of_draw == 3){
@@ -275,24 +290,6 @@ function drope_format_luck_numbers_dashboard($client_lucky_numbers, $raffle_tota
 
     return $result;
 }
-
-function validate_image($file){
-    global $_settings;
-    if(!empty($file)){
-			// exit;
-        $ex = explode("?",$file);
-        $file = $ex[0];
-        $ts = isset($ex[1]) ? "?".$ex[1] : '';
-        if(is_file(BASE_APP.$file)){
-           return BASE_URL.$file.$ts;
-       }else{
-            return BASE_URL . "assets/img/no_image.jpg";
-       }
-   }else{
-      return BASE_URL . "assets/img/no_image.jpg";
-  }
-}
-
 function format_num($number = '', $decimal = '', $decimalSeparator = ',', $thousandsSeparator = '.'){
     if(is_numeric($number)){
         $ex = explode(".", $number);
