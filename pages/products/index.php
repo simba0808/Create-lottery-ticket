@@ -57,6 +57,64 @@ if(isset($_GET['cid']) && is_numeric($_GET['cid'])){
                                     </div>
                                 </a>
                             </div>
+                            $orders = $conn->query($find_orders_query)->num_rows;
+             if ($orders == 1){
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Indisponível" class="btn btn-danger w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
+                  </div>
+               <?php
+             } else {
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Disponív- XZpel" class="btn btn-success w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
+                  </div>
+               <?php
+             }
+             $orders = $conn->query($find_orders_query)->num_rows;
+             if ($orders == 1){
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Indisponível" class="btn btn-danger w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
+                  </div>
+               <?php
+             } else {
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Disponív- XZpel" class="btn btn-success w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
+                  </div>
+               <?php
+             }
+             $orders = $conn->query($find_orders_query)->num_rows;
+             if ($orders == 1){
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Indisponível" class="btn btn-danger w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
+                  </div>
+               <?php
+             } else {
+               ?>
+                  <div class="col-auto px-1 mb-2 text-center">
+                     <button title="Disponív- XZpel" class="btn btn-success w-100 btn-sm py-0 px-2 text-nowrap font-xss"><span class="font-weight-500">
+                        <?php 
+                        echo ($cotas_premiadas);
+                     ?></span></span></button>
+                  </div>
                             <?php endwhile; ?>
                         </div>
                     </div>
