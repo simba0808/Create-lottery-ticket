@@ -398,6 +398,521 @@ if ($enable_cpf == 1){
    </div>
 </div>
    
+<?php if($enable_ranking > 0){ ?>
+   <div class="app-title mb-2">
+      <h1>🏆 Ranking</h1>
+      <?php if($ranking_message){ ?>
+      <br><div class="app-title-desc"><?= $ranking_message; ?></div>
+   <?php } ?>
+   </div>
+   
+   <div class="top-compradores" style="background:#fff;padding: 20 0 10 10;border-radius:10px;margin-top:0px;margin-bottom:10px;">
+      <?php
+      $requests = $conn->query("
+        SELECT c.firstname, SUM(o.quantity) AS total_quantity
+        FROM order_list o
+        INNER JOIN customer_list c ON o.customer_id = c.id
+        WHERE o.product_id = {$id} AND o.status = 2
+        GROUP BY o.customer_id
+        ORDER BY total_quantity DESC
+        LIMIT {$ranking_qty}
+        ");
+
+
+
+      $count = 0; while ($row = $requests->fetch_assoc()) {
+       $count++;
+       if ($count == 1){
+         $medal = '🥇';
+       } elseif ($count == 2) {
+         $medal = '🥈';
+       } elseif ($count == 3){
+         $medal = '🥉';
+       } else {
+         $medal = '👤';
+       }
+       ?>
+      
+      <div class="item-content flex-column" style="max-width:32.7%;min-width:32.7%;">
+         <div class="text-center customer-details" style="border:1px solid;padding:10px;border-radius:5px;margin:5px;">
+            <span style="font-size:20px;"><?= $medal ?></span><br>
+            <span class="ganhador-name"><?= $row['firstname'] ?></span>
+            <?php if($enable_ranking_show == 1){ ?>
+               <p class="font-xss mb-0"><?= $row['total_quantity'] ?> COTAS</p>
+            <?php } ?>
+         </div>
+      </div>
+   <?php } ?>
+      
+   </div>
+
+<?php } ?>
+
+
+<div class="modal fade" id="modal-consultaCompras">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <form id="consultMyNumbers">
+            <div class="modal-header">
+               <h6 class="modal-title">Consulta de compras</h6>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+               <?php if ($enable_cpf != 1){ ?>
+                  <label class="form-label">Informe seu telefone</label>
+                  <div class="input-group mb-2">
+                     <input onkeyup="formatarTEL(this);" maxlength="15" class="form-control" aria-label="Número de telefone" maxlength="15" id="phone" name="phone" required="" value="">
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } else { ?>
+                  <label class="form-label">Informe seu CPF</label>
+                  <div class="input-group mb-2">
+                     <input name="cpf" class="form-control" id="cpf" value="" maxlength="14" minlength="14" placeholder="000.000.000-00" oninput="formatarCPF(this.value)" required>
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } ?>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+
+<?php if($enable_ranking > 0){ ?>
+   <div class="app-title mb-2">
+      <h1>🏆 Ranking</h1>
+      <?php if($ranking_message){ ?>
+      <br><div class="app-title-desc"><?= $ranking_message; ?></div>
+   <?php } ?>
+   </div>
+   
+   <div class="top-compradores" style="background:#fff;padding: 20 0 10 10;border-radius:10px;margin-top:0px;margin-bottom:10px;">
+      <?php
+      $requests = $conn->query("
+        SELECT c.firstname, SUM(o.quantity) AS total_quantity
+        FROM order_list o
+        INNER JOIN customer_list c ON o.customer_id = c.id
+        WHERE o.product_id = {$id} AND o.status = 2
+        GROUP BY o.customer_id
+        ORDER BY total_quantity DESC
+        LIMIT {$ranking_qty}
+        ");
+
+
+
+      $count = 0; while ($row = $requests->fetch_assoc()) {
+       $count++;
+       if ($count == 1){
+         $medal = '🥇';
+       } elseif ($count == 2) {
+         $medal = '🥈';
+       } elseif ($count == 3){
+         $medal = '🥉';
+       } else {
+         $medal = '👤';
+       }
+       ?>
+      
+      <div class="item-content flex-column" style="max-width:32.7%;min-width:32.7%;">
+         <div class="text-center customer-details" style="border:1px solid;padding:10px;border-radius:5px;margin:5px;">
+            <span style="font-size:20px;"><?= $medal ?></span><br>
+            <span class="ganhador-name"><?= $row['firstname'] ?></span>
+            <?php if($enable_ranking_show == 1){ ?>
+               <p class="font-xss mb-0"><?= $row['total_quantity'] ?> COTAS</p>
+            <?php } ?>
+         </div>
+      </div>
+   <?php } ?>
+      
+   </div>
+
+<?php } ?>
+
+
+<div class="modal fade" id="modal-consultaCompras">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <form id="consultMyNumbers">
+            <div class="modal-header">
+               <h6 class="modal-title">Consulta de compras</h6>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+               <?php if ($enable_cpf != 1){ ?>
+                  <label class="form-label">Informe seu telefone</label>
+                  <div class="input-group mb-2">
+                     <input onkeyup="formatarTEL(this);" maxlength="15" class="form-control" aria-label="Número de telefone" maxlength="15" id="phone" name="phone" required="" value="">
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } else { ?>
+                  <label class="form-label">Informe seu CPF</label>
+                  <div class="input-group mb-2">
+                     <input name="cpf" class="form-control" id="cpf" value="" maxlength="14" minlength="14" placeholder="000.000.000-00" oninput="formatarCPF(this.value)" required>
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } ?>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+
+<?php if($enable_ranking > 0){ ?>
+   <div class="app-title mb-2">
+      <h1>🏆 Ranking</h1>
+      <?php if($ranking_message){ ?>
+      <br><div class="app-title-desc"><?= $ranking_message; ?></div>
+   <?php } ?>
+   </div>
+   
+   <div class="top-compradores" style="background:#fff;padding: 20 0 10 10;border-radius:10px;margin-top:0px;margin-bottom:10px;">
+      <?php
+      $requests = $conn->query("
+        SELECT c.firstname, SUM(o.quantity) AS total_quantity
+        FROM order_list o
+        INNER JOIN customer_list c ON o.customer_id = c.id
+        WHERE o.product_id = {$id} AND o.status = 2
+        GROUP BY o.customer_id
+        ORDER BY total_quantity DESC
+        LIMIT {$ranking_qty}
+        ");
+
+
+
+      $count = 0; while ($row = $requests->fetch_assoc()) {
+       $count++;
+       if ($count == 1){
+         $medal = '🥇';
+       } elseif ($count == 2) {
+         $medal = '🥈';
+       } elseif ($count == 3){
+         $medal = '🥉';
+       } else {
+         $medal = '👤';
+       }
+       ?>
+      
+      <div class="item-content flex-column" style="max-width:32.7%;min-width:32.7%;">
+         <div class="text-center customer-details" style="border:1px solid;padding:10px;border-radius:5px;margin:5px;">
+            <span style="font-size:20px;"><?= $medal ?></span><br>
+            <span class="ganhador-name"><?= $row['firstname'] ?></span>
+            <?php if($enable_ranking_show == 1){ ?>
+               <p class="font-xss mb-0"><?= $row['total_quantity'] ?> COTAS</p>
+            <?php } ?>
+         </div>
+      </div>
+   <?php } ?>
+      
+   </div>
+
+<?php } ?>
+
+
+<div class="modal fade" id="modal-consultaCompras">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <form id="consultMyNumbers">
+            <div class="modal-header">
+               <h6 class="modal-title">Consulta de compras</h6>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+               <?php if ($enable_cpf != 1){ ?>
+                  <label class="form-label">Informe seu telefone</label>
+                  <div class="input-group mb-2">
+                     <input onkeyup="formatarTEL(this);" maxlength="15" class="form-control" aria-label="Número de telefone" maxlength="15" id="phone" name="phone" required="" value="">
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } else { ?>
+                  <label class="form-label">Informe seu CPF</label>
+                  <div class="input-group mb-2">
+                     <input name="cpf" class="form-control" id="cpf" value="" maxlength="14" minlength="14" placeholder="000.000.000-00" oninput="formatarCPF(this.value)" required>
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } ?>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+
+
+<?php if($enable_ranking > 0){ ?>
+   <div class="app-title mb-2">
+      <h1>🏆 Ranking</h1>
+      <?php if($ranking_message){ ?>
+      <br><div class="app-title-desc"><?= $ranking_message; ?></div>
+   <?php } ?>
+   </div>
+   
+   <div class="top-compradores" style="background:#fff;padding: 20 0 10 10;border-radius:10px;margin-top:0px;margin-bottom:10px;">
+      <?php
+      $requests = $conn->query("
+        SELECT c.firstname, SUM(o.quantity) AS total_quantity
+        FROM order_list o
+        INNER JOIN customer_list c ON o.customer_id = c.id
+        WHERE o.product_id = {$id} AND o.status = 2
+        GROUP BY o.customer_id
+        ORDER BY total_quantity DESC
+        LIMIT {$ranking_qty}
+        ");
+
+
+
+      $count = 0; while ($row = $requests->fetch_assoc()) {
+       $count++;
+       if ($count == 1){
+         $medal = '🥇';
+       } elseif ($count == 2) {
+         $medal = '🥈';
+       } elseif ($count == 3){
+         $medal = '🥉';
+       } else {
+         $medal = '👤';
+       }
+       ?>
+      
+      <div class="item-content flex-column" style="max-width:32.7%;min-width:32.7%;">
+         <div class="text-center customer-details" style="border:1px solid;padding:10px;border-radius:5px;margin:5px;">
+            <span style="font-size:20px;"><?= $medal ?></span><br>
+            <span class="ganhador-name"><?= $row['firstname'] ?></span>
+            <?php if($enable_ranking_show == 1){ ?>
+               <p class="font-xss mb-0"><?= $row['total_quantity'] ?> COTAS</p>
+            <?php } ?>
+         </div>
+      </div>
+   <?php } ?>
+      
+   </div>
+
+<?php } ?>
+
+
+<div class="modal fade" id="modal-consultaCompras">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <form id="consultMyNumbers">
+            <div class="modal-header">
+               <h6 class="modal-title">Consulta de compras</h6>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+               <?php if ($enable_cpf != 1){ ?>
+                  <label class="form-label">Informe seu telefone</label>
+                  <div class="input-group mb-2">
+                     <input onkeyup="formatarTEL(this);" maxlength="15" class="form-control" aria-label="Número de telefone" maxlength="15" id="phone" name="phone" required="" value="">
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } else { ?>
+                  <label class="form-label">Informe seu CPF</label>
+                  <div class="input-group mb-2">
+                     <input name="cpf" class="form-control" id="cpf" value="" maxlength="14" minlength="14" placeholder="000.000.000-00" oninput="formatarCPF(this.value)" required>
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } ?>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+
+<?php if($enable_ranking > 0){ ?>
+   <div class="app-title mb-2">
+      <h1>🏆 Ranking</h1>
+      <?php if($ranking_message){ ?>
+      <br><div class="app-title-desc"><?= $ranking_message; ?></div>
+   <?php } ?>
+   </div>
+   
+   <div class="top-compradores" style="background:#fff;padding: 20 0 10 10;border-radius:10px;margin-top:0px;margin-bottom:10px;">
+      <?php
+      $requests = $conn->query("
+        SELECT c.firstname, SUM(o.quantity) AS total_quantity
+        FROM order_list o
+        INNER JOIN customer_list c ON o.customer_id = c.id
+        WHERE o.product_id = {$id} AND o.status = 2
+        GROUP BY o.customer_id
+        ORDER BY total_quantity DESC
+        LIMIT {$ranking_qty}
+        ");
+
+
+
+      $count = 0; while ($row = $requests->fetch_assoc()) {
+       $count++;
+       if ($count == 1){
+         $medal = '🥇';
+       } elseif ($count == 2) {
+         $medal = '🥈';
+       } elseif ($count == 3){
+         $medal = '🥉';
+       } else {
+         $medal = '👤';
+       }
+       ?>
+      
+      <div class="item-content flex-column" style="max-width:32.7%;min-width:32.7%;">
+         <div class="text-center customer-details" style="border:1px solid;padding:10px;border-radius:5px;margin:5px;">
+            <span style="font-size:20px;"><?= $medal ?></span><br>
+            <span class="ganhador-name"><?= $row['firstname'] ?></span>
+            <?php if($enable_ranking_show == 1){ ?>
+               <p class="font-xss mb-0"><?= $row['total_quantity'] ?> COTAS</p>
+            <?php } ?>
+         </div>
+      </div>
+   <?php } ?>
+      
+   </div>
+
+<?php } ?>
+
+
+<div class="modal fade" id="modal-consultaCompras">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <form id="consultMyNumbers">
+            <div class="modal-header">
+               <h6 class="modal-title">Consulta de compras</h6>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+               <?php if ($enable_cpf != 1){ ?>
+                  <label class="form-label">Informe seu telefone</label>
+                  <div class="input-group mb-2">
+                     <input onkeyup="formatarTEL(this);" maxlength="15" class="form-control" aria-label="Número de telefone" maxlength="15" id="phone" name="phone" required="" value="">
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } else { ?>
+                  <label class="form-label">Informe seu CPF</label>
+                  <div class="input-group mb-2">
+                     <input name="cpf" class="form-control" id="cpf" value="" maxlength="14" minlength="14" placeholder="000.000.000-00" oninput="formatarCPF(this.value)" required>
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } ?>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+
+<?php if($enable_ranking > 0){ ?>
+   <div class="app-title mb-2">
+      <h1>🏆 Ranking</h1>
+      <?php if($ranking_message){ ?>
+      <br><div class="app-title-desc"><?= $ranking_message; ?></div>
+   <?php } ?>
+   </div>
+   
+   <div class="top-compradores" style="background:#fff;padding: 20 0 10 10;border-radius:10px;margin-top:0px;margin-bottom:10px;">
+      <?php
+      $requests = $conn->query("
+        SELECT c.firstname, SUM(o.quantity) AS total_quantity
+        FROM order_list o
+        INNER JOIN customer_list c ON o.customer_id = c.id
+        WHERE o.product_id = {$id} AND o.status = 2
+        GROUP BY o.customer_id
+        ORDER BY total_quantity DESC
+        LIMIT {$ranking_qty}
+        ");
+
+
+
+      $count = 0; while ($row = $requests->fetch_assoc()) {
+       $count++;
+       if ($count == 1){
+         $medal = '🥇';
+       } elseif ($count == 2) {
+         $medal = '🥈';
+       } elseif ($count == 3){
+         $medal = '🥉';
+       } else {
+         $medal = '👤';
+       }
+       ?>
+      
+      <div class="item-content flex-column" style="max-width:32.7%;min-width:32.7%;">
+         <div class="text-center customer-details" style="border:1px solid;padding:10px;border-radius:5px;margin:5px;">
+            <span style="font-size:20px;"><?= $medal ?></span><br>
+            <span class="ganhador-name"><?= $row['firstname'] ?></span>
+            <?php if($enable_ranking_show == 1){ ?>
+               <p class="font-xss mb-0"><?= $row['total_quantity'] ?> COTAS</p>
+            <?php } ?>
+         </div>
+      </div>
+   <?php } ?>
+      
+   </div>
+
+<?php } ?>
+
+
+<div class="modal fade" id="modal-consultaCompras">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <form id="consultMyNumbers">
+            <div class="modal-header">
+               <h6 class="modal-title">Consulta de compras</h6>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+               <?php if ($enable_cpf != 1){ ?>
+                  <label class="form-label">Informe seu telefone</label>
+                  <div class="input-group mb-2">
+                     <input onkeyup="formatarTEL(this);" maxlength="15" class="form-control" aria-label="Número de telefone" maxlength="15" id="phone" name="phone" required="" value="">
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } else { ?>
+                  <label class="form-label">Informe seu CPF</label>
+                  <div class="input-group mb-2">
+                     <input name="cpf" class="form-control" id="cpf" value="" maxlength="14" minlength="14" placeholder="000.000.000-00" oninput="formatarCPF(this.value)" required>
+                     <button class="btn btn-secondary" type="submit" id="button-addon2">
+                        <div class=""><i class="bi bi-check-circle"></i></div>
+                     </button>
+                  </div>
+               <?php } ?>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
 
 <?php if($status == '1'){ ?>
 <?php if (($cotas_premiadas)){
