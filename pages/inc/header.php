@@ -125,6 +125,30 @@ $facebook_pixel_id = $_settings->info('facebook_pixel_id');
                      </div>
                   <?php } ?>
 
+                  <div class="modal-body">
+                     <div class="container container-600">
+                        <?php if($user_id){ ?>
+                           <div class="card-usuario mb-2">
+                              <div class="card-usuario--informacoes">
+                                 <h3>Olá, <?php 
+                                    $firstname = ucwords($_settings->userdata('firstname')); 
+                                    $lastname = ucwords($_settings->userdata('lastname')); 
+                                    echo $firstname.' '.$lastname.'';
+                                    ?>
+                                 </h3>
+                            <div class="email font-xss saldo-value"></div>
+                            <div class="email font-xss saldo-value"></div>
+                         </div>
+                         <div class="card-usuario--sair">
+                            <a href="<?php echo BASE_URL.'logout?'.$_SERVER['REQUEST_URI']; ?>"> 
+                              <button type="button" class="btn btn-link text-center text-white-50 ps-1 pe-0 pt-0 pb-0 font-lg">
+                                 <i class="bi bi-box-arrow-left"></i>
+                              </button>
+                           </a>
+                        </div>
+                     </div>
+                  <?php } ?>
+
                   <nav class="nav-vertical nav-submenu font-xs mb-2">
                      <ul>
 
